@@ -1,0 +1,42 @@
+{
+    "name": "front",
+    "version": "0.0.0",
+    "description": "frontendBuildSystem",
+    "author": "arsenykonohov",
+    "license": "ISC",
+    "main": "index.js",
+    "scripts": {
+        "test": "test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://arsenykonohov@github.com/arsenykonohov/_front.git"
+    },
+    "bugs": {
+        "url": "https://github.com/arsenykonohov/_front/issues"
+    },
+    "homepage": "https://github.com/arsenykonohov/_front",
+    "dependencies": {
+        "gulp": "^3.8.11"
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
