@@ -1,0 +1,149 @@
+$bgHeader: gold;
+$bgFooter: tomato;
+$bgContent: #eee;
+
+$headerHeight: 80px;
+$footerHeight: 60px;
+
+$accent: #e83c3c;
+$socond: #25ba25;
+$service: #30daf8;
+
+$font: Arial, sans-serif;
+$sFont: Arial, sans-serif;
+
+
+// http://e-planet.ru/company/blog/poleznye-snippety-dlja-sass.html
+// COLORES
+$color-stack:
+    (group: orange, id: normal, color: #e67835),
+    (group: orange, id: pale,   color: #f8a878),
+    (group: orange, id: dark,   color: #ad490c),
+    (group: blue,   id: normal, color: #426682);
+// Color  Function
+@function color($group, $shade:normal, $transparency:1) {
+    @each $color in $color-stack{
+        $c-group: map-get($color, group);
+        $c-shade: map-get($color, id);
+        @if($group == map-get($color, group) and $shade == map-get($color, id)) {
+            @return rgba(map-get($color, color), $transparency);
+        }
+    }
+}
+// for example
+// color: color(blue, normal, .8);
+// background: color(orange, pale, .4);
+// border-color: color(orange, dark);
+
+
+
+
+// FONT GREED
+$font-stack:
+    (group: brandon,   id: light, font:          ('Brandon Grot W01 Light', sans-serif ),  weight: 200, style: normal),
+    (group: brandon,   id: light-italic, font:   ('Brandon Grot W01 Light', sans-serif ),  weight: 200, style: italic),
+    (group: brandon,   id: regular, font:        ('Brandon Grot W01-Regular', sans-serif), weight: 400, style: normal),
+    (group: brandon,   id: regular-italic, font: ('Brandon Grot W01-Regular', sans-serif), weight: 400, style: italic),
+    (group: brandon,   id: bold, font:           ('Brandon Grot W01 Black', sans-serif),   weight: 700, style: normal),
+    (group: brandon,   id: bold-italic, font:    ('Brandon Grot W01-Regular', sans-serif), weight: 400, style: italic),
+    (group: clarendon, id: regular, font:        ('Clarendon LT W01', serif),              weight: 200, style: normal),
+    (group: code,      id: regular, font:        (monospace),                              weight: 400, style: normal);
+// Breakpoint Mixin
+@mixin font($group, $id:regular) {
+    @each $font in $font-stack{
+        @if($group == map-get($font, group) and $id == map-get($font, id)){
+            font-family: map-get($font, font);
+            font-weight: map-get($font, weight);
+            font-style: map-get($font, style);
+        }
+    }
+}
+
+
+
+
+// MEDIA QUERIES
+$media-stack:
+    (group: tablet, id: general,   rule: "only screen and (min-device-width: 700px)"),
+    (group: small,  id: general,   rule: "only screen and(min-device-width: 1100px)"),
+    (group: small,  id: inbetween, rule: "only screen and(min-device-width: 1100px) and (max-device-width: 1400px)"),
+    (group: large,  id: general,   rule: "only screen and(min-device-width: 1400px)"),
+    (group: print,  id: general,   rule: "only print");
+@mixin media($group, $id: general) {
+    @each $media in $media-stack{
+        @if($group == map-get($media, group) and $id == map-get($media, id)){
+            $rule: map-get($media, rule);
+            @media #{$rule} {@content}
+        }
+    }
+}
+// MEDIA QUERIES too
+$media-stack:
+    (group: tablet, id: general, rule: "only screen and (min-device-width: 700px)"),
+    (group: small, id: general, rule: "only screen and(min-device-width: 1100px)"),
+    (group: small, id: inbetween, rule: "only screen and(min-device-width: 1100px) and (max-device-width: 1400px)"),
+    (group: large, id: general, rule: "only screen and(min-device-width: 1400px)"),
+    (group: print, id: general, rule: "only print"),
+    (group: custom, id: screen, rule: "only screen and");
+@mixin media($group, $id: general, $customRule: ""){
+    @each $media in $media-stack{
+        @if($group == map-get($media, group) and $id == map-get($media, id)){
+            $rule: map-get($media, rule);
+            @media #{$rule} #{$customRule} {@content}
+        }
+    }
+}
+
+
+// some differents mixins
+@mixin animation_iteration($count) {
+    -webkit-animation-iteration-count: $count;
+    animation-iteration-count: $count;
+}
+@mixin animation_delay($delay) {
+    -webkit-animation-delay: $delay;
+    -moz-animation-delay: $delay;
+    -o-animation-delay: $delay;
+    animation-delay: $delay;
+}
+@mixin animation_duration($durat) {
+    -webkit-animation-duration: $durat;
+    animation-duration: $durat;
+}
+@mixin radius($radius) {
+-webkit-border-radius: $radius;
+   -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+        border-radius: $radius;
+}
+@mixin transition($transition) {
+-webkit-transition: $transition;
+   -moz-transition: $transition;
+    -ms-transition: $transition;
+     -o-transition: $transition;
+        transition: $transition;
+}
+@mixin transform($transforms) {
+-webkit-transform: $transforms;
+   -moz-transform: $transforms;
+    -ms-transform: $transforms;
+     -o-transform: $transforms;
+        transform: $transforms;
+}
+@mixin box($sizing) {
+    -webkit-box-sizing: $sizing;
+    -moz-box-sizing: $sizing;
+    box-sizing: $sizing;
+}
+@mixin clearfix {
+    zoom:1;
+    &:before, &:after {
+        content: ""; 
+        display: block; 
+        height: 0; 
+        overflow: hidden; 
+    }
+    &:after {
+        clear: both;
+    }
+}

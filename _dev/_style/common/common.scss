@@ -1,0 +1,55 @@
+@import "../mixins/mixins";
+
+html,
+body,
+.page {
+    height: 100%;
+}
+html * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+p,ul,li, {
+    margin: 0;
+    padding: 0;
+}
+ul, li {
+    list-style: none;
+}
+a {
+    text-decoration: none;
+    outline: none;
+}
+h1,h2,h3,h4,h5 {
+    margin: 0;
+    padding: 0;
+}
+textarea, input {
+    outline: none;
+}
+textarea {
+    resize: none;
+}
+// style for BEM classes
+.page {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    @include clearfix;
+}
+.page__line {
+    padding: 0;
+    margin: 0;
+    min-width: 100%;
+    position: relative;
+    @include clearfix;
+}
+.wrapper {
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+    width: 1000px;
+    text-align: center;
+}
+
