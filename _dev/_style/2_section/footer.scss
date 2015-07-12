@@ -1,0 +1,8 @@
+@import "../mixins";
+
+
+.footer {
+    background: $bgFooter;
+    min-height: $footerHeight;
+    z-index: 5;
+}

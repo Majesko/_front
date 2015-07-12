@@ -1,0 +1,8 @@
+@import "../mixins";
+
+
+.nav {
+    background: $bgNav;
+    min-height: $navHeight;
+    z-index: 4;
+}

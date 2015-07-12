@@ -1,16 +1,89 @@
-$bgHeader: gold;
-$bgFooter: tomato;
-$bgContent: #eee;
+$bgTop: #ff6347;
+$bgNav: #ffd700;
+$bgHeader: #333;
+$bgFooter: #ddd;
+$bgContent: #ddaaff;
 
-$headerHeight: 80px;
-$footerHeight: 60px;
+$topHeight: 50px;
+$navHeight: 50px;
+$headerHeight: 250px;
+$footerHeight: 260px;
 
 $accent: #e83c3c;
 $socond: #25ba25;
-$service: #30daf8;
+$service: #0000ff;
 
-$font: Arial, sans-serif;
-$sFont: Arial, sans-serif;
+$g_font: Arial, sans-serif;
+$s_font: Arial, sans-serif;
+$t_font: Arial, sans-serif;
+
+
+@mixin animation_iteration($count) {
+    -webkit-animation-iteration-count: $count;
+    animation-iteration-count: $count;
+}
+//@include animation_iteration(infinite)
+
+@mixin animation_delay($delay) {
+    -webkit-animation-delay: $delay;
+    -moz-animation-delay: $delay;
+    -o-animation-delay: $delay;
+    animation-delay: $delay;
+}
+//@include animation_delay(3s)
+
+@mixin animation_duration($durat) {
+    -webkit-animation-duration: $durat;
+    animation-duration: $durat;
+}
+//@include animation_delay(3s)
+
+@mixin radius($radius) {
+-webkit-border-radius: $radius;
+   -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+        border-radius: $radius;
+}
+//@include radius(5px);
+
+@mixin transition($transition) {
+-webkit-transition: $transition;
+   -moz-transition: $transition;
+    -ms-transition: $transition;
+     -o-transition: $transition;
+        transition: $transition;
+}
+//@include transition(all 1s linear)
+
+@mixin transform($transforms) {
+-webkit-transform: $transforms;
+   -moz-transform: $transforms;
+    -ms-transform: $transforms;
+     -o-transform: $transforms;
+        transform: $transforms;
+}
+//@include transform($transforms) // ========== ?
+
+@mixin box($sizing) {
+    -webkit-box-sizing: $sizing;
+    -moz-box-sizing: $sizing;
+    box-sizing: $sizing;
+}
+//@include box(border-box)
+
+@mixin clearfix {
+    zoom:1;
+    &:before, &:after {
+        content: ""; 
+        display: block; 
+        height: 0; 
+        overflow: hidden; 
+    }
+    &:after {
+        clear: both;
+    }
+}
+//@include clearfix
 
 
 // http://e-planet.ru/company/blog/poleznye-snippety-dlja-sass.html
@@ -35,9 +108,6 @@ $color-stack:
 // background: color(orange, pale, .4);
 // border-color: color(orange, dark);
 
-
-
-
 // FONT GREED
 $font-stack:
     (group: brandon,   id: light, font:          ('Brandon Grot W01 Light', sans-serif ),  weight: 200, style: normal),
@@ -58,9 +128,6 @@ $font-stack:
         }
     }
 }
-
-
-
 
 // MEDIA QUERIES
 $media-stack:
@@ -91,59 +158,5 @@ $media-stack:
             $rule: map-get($media, rule);
             @media #{$rule} #{$customRule} {@content}
         }
-    }
-}
-
-
-// some differents mixins
-@mixin animation_iteration($count) {
-    -webkit-animation-iteration-count: $count;
-    animation-iteration-count: $count;
-}
-@mixin animation_delay($delay) {
-    -webkit-animation-delay: $delay;
-    -moz-animation-delay: $delay;
-    -o-animation-delay: $delay;
-    animation-delay: $delay;
-}
-@mixin animation_duration($durat) {
-    -webkit-animation-duration: $durat;
-    animation-duration: $durat;
-}
-@mixin radius($radius) {
--webkit-border-radius: $radius;
-   -moz-border-radius: $radius;
-    -ms-border-radius: $radius;
-        border-radius: $radius;
-}
-@mixin transition($transition) {
--webkit-transition: $transition;
-   -moz-transition: $transition;
-    -ms-transition: $transition;
-     -o-transition: $transition;
-        transition: $transition;
-}
-@mixin transform($transforms) {
--webkit-transform: $transforms;
-   -moz-transform: $transforms;
-    -ms-transform: $transforms;
-     -o-transform: $transforms;
-        transform: $transforms;
-}
-@mixin box($sizing) {
-    -webkit-box-sizing: $sizing;
-    -moz-box-sizing: $sizing;
-    box-sizing: $sizing;
-}
-@mixin clearfix {
-    zoom:1;
-    &:before, &:after {
-        content: ""; 
-        display: block; 
-        height: 0; 
-        overflow: hidden; 
-    }
-    &:after {
-        clear: both;
     }
 }

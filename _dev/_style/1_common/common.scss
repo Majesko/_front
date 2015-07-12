@@ -1,8 +1,10 @@
-@import "../mixins/mixins";
+@import "../mixins";
 
 html,
 body,
 .page {
+    margin: 0;
+    padding: 0;
     height: 100%;
 }
 html * {
@@ -32,24 +34,19 @@ textarea {
     resize: none;
 }
 // style for BEM classes
-.page {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    @include clearfix;
-}
 .page__line {
     padding: 0;
     margin: 0;
-    min-width: 100%;
+    width: 100%;
     position: relative;
     @include clearfix;
 }
 .wrapper {
-    height: 100%;
+    border: solid 1px $service;
     margin: 0 auto;
     position: relative;
     width: 1000px;
     text-align: center;
+    @include clearfix;
 }
 

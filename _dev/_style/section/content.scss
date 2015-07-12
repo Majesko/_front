@@ -1,9 +1,0 @@
-@import "../mixins/mixins";
-
-.content {
-    background: #333;
-    margin: -1*($headerHeight) 0 -1*($footerHeight) 0;
-    min-height: 100%;
-    padding: $headerHeight 0 ($footerHeight)+25px 0;
-    z-index: 1;
-}

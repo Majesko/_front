@@ -1,0 +1,8 @@
+@import "../mixins";
+
+
+.header {
+    background: $bgHeader;
+    min-height: $headerHeight;
+    z-index: 3;
+}

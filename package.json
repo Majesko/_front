@@ -1,42 +1,47 @@
 {
-    "name": "front",
-    "version": "0.0.0",
-    "description": "frontendBuildSystem",
-    "author": "arsenykonohov",
-    "license": "ISC",
-    "main": "index.js",
-    "scripts": {
-        "test": "test"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://arsenykonohov@github.com/arsenykonohov/_front.git"
-    },
-    "bugs": {
-        "url": "https://github.com/arsenykonohov/_front/issues"
-    },
-    "homepage": "https://github.com/arsenykonohov/_front",
-    "dependencies": {
-        "gulp": "^3.8.11"
-    }
+  "name": "front",
+  "version": "0.0.0",
+  "description": "frontendBuildSystem",
+  "author": "arsenykonohov",
+  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://arsenykonohov@github.com/arsenykonohov/_front.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arsenykonohov/_front/issues"
+  },
+  "homepage": "https://github.com/arsenykonohov/_front",
+  "dependencies": {
+    "gulp": "^3.8.11"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.7.13",
+    "gulp-autoprefixer": "^2.3.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-if": "^1.2.5",
+    "gulp-jade": "^1.0.1",
+    "gulp-load-plugins": "^1.0.0-rc.1",
+    "gulp-minify-css": "^1.2.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-open": "^0.3.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.3",
+    "gulp-uglify": "^1.2.0",
+    "gulp-useref": "^1.2.0",
+    "gulp-watch": "^4.2.4",
+    "gulp-webpack": "^1.5.0",
+    "gulp-webpack-build": "^0.11.1",
+    "gulp.spritesmith": "^3.8.2",
+    "node-libs-browser": "^0.5.2",
+    "rimraf": "^2.4.1",
+    "run-sequence": "^1.1.1",
+    "webpack": "^1.10.1",
+    "webpack-config": "^0.7.0",
+    "wiredep": "^3.0.0-beta"
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

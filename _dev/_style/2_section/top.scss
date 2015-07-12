@@ -1,0 +1,12 @@
+@import "../mixins";
+
+
+.top {
+    background: $bgTop;
+    min-height: $topHeight;
+    z-index: 5;
+}
+
+
+
+

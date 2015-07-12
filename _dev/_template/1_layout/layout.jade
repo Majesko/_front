@@ -32,7 +32,7 @@ html
         meta(name="theme-color", content="#ffffff")
         
         //from bower
-        // build:js(_dev) js/modernizr/modernizr.js
+        // build:js(_dev) js/vendor/modernizr.js
         script(src="_bower/modernizr/modernizr.js")
         // endbuild
         
@@ -41,31 +41,32 @@ html
         // endbower
         // endbuild
         
-        // bundle css files
-        link(rel="stylesheet" href="css/bundle.min.css")
+        link(rel="stylesheet" href="css/bundle.css")
+        
         title
             block title
     body
+    
         <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        .page
         
-            // HEADER
-            header.page__line.header
-                include ../common/header.jade
-                
+        .page
+            // TOP
+            .page__line.top
+                include ../2_section/top.jade
             // NAV
             .page__line.nav
-                include ../common/nav.jade
-                
+                include ../2_section/nav.jade
+            // HEADER
+            header.page__line.header
+                include ../2_section/header.jade
             // CONTENT
             .page__line.content
                 block content
-                
             // FOOTER
             footer.page__line.footer
-                include ../common/footer.jade
+                include ../2_section/footer.jade
                 
         // bower scripts
         // build:js(_dev) js/vendor/vendor.js
