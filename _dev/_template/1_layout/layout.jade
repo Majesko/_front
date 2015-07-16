@@ -32,11 +32,11 @@ html
         meta(name="theme-color", content="#ffffff")
         
         //from bower
-        // build:js(_dev) js/vendor/modernizr.js
-        script(src="_bower/modernizr/modernizr.js")
+        // build:js(_dev/vndr/tmp) js/vendor/modernizr.js
+        script(src="../../_bower/modernizr/modernizr.js")
         // endbuild
         
-        // build:css(_dev) css/vendor/vendor.css
+        // build:css(_dev/vndr/tmp) css/vendor/vendor.css
         // bower:css
         // endbower
         // endbuild
@@ -46,7 +46,6 @@ html
         title
             block title
     body
-    
         <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -69,7 +68,7 @@ html
                 include ../2_section/footer.jade
                 
         // bower scripts
-        // build:js(_dev) js/vendor/vendor.js
+        // build:js(_dev/vndr/tmp) js/vendor/vendor.js
         // bower:js
         // endbower
         // endbuild

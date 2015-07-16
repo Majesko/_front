@@ -42,6 +42,6 @@
     "run-sequence": "^1.1.1",
     "webpack": "^1.10.1",
     "webpack-config": "^0.7.0",
-    "wiredep": "^3.0.0-beta"
+    "wiredep": "^2.2.2"
   }
 }

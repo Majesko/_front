@@ -110,6 +110,19 @@ gulp.task('bld', function (cb) {
 });
 
 
+gulp.task('wiredep', function () {
+    "use strict";
+    
+    return gulp.src("./_dev/vndr/tmp/*.html")
+        .pipe($.wiredep.stream({
+            directory: './_dev/_bower',
+            devDependencies: true
+        }))
+        .pipe($.notify('wiredep'))
+        .pipe(gulp.dest('./_dev/vndr'));
+});
+
+
 gulp.task('build', function () {
     "use strict";
     var assets = $.useref.assets();
@@ -117,11 +130,13 @@ gulp.task('build', function () {
 //    $.rimraf.sync('./app/', function (er) {
 //        if (er) throw er;
 //    });
+//            exclude: ['./_dev/_bower/modernizr']
     
-    return $.gulp.src("./_dev/vndr/tmp/*.html")
-    
-        .pipe($.wiredep.stream({directory: './_dev/_bower'}))
-    
+    return gulp.src("./_dev/vndr/tmp/*.html")
+        .pipe($.wiredep.stream({
+            directory: './_dev/_bower',
+            devDependencies: true
+        }))
         .pipe(assets).on('error', log)
         .pipe($.if('*.js',  $.uglify())).on('error', log)
         .pipe($.if('*.css', $.minifyCss())).on('error', log)
