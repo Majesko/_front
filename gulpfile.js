@@ -5,9 +5,8 @@ var require,
     config,
     log,
     gulp = require('gulp'),
-    
     $ = require('gulp-load-plugins')({
-        pattern: '*',
+        pattern: ['gulp-*', 'gulp.*', "*"],
         lazy: false
     });
 
@@ -186,8 +185,6 @@ gulp.task('js', function () {
         .pipe($.uglify())
         .pipe($.rename("main.min.js"))
         .pipe(gulp.dest(path.app.js))
-//        .pipe($.browserSync.reload)
-//        .pipe($.browserSync.reload({stream: true}))
         .pipe($.notify("javaScript"))
         .on('error', log);
 });
@@ -210,19 +207,21 @@ gulp.task("build", function (cb) {
 
 
 
+
 //// WATCHER
 gulp.task('watch', function () {
     "use strict";
-//    gulp.watch([path.wch.bwr],  ['bower']);
     gulp.watch([path.wch.tmp],  ['mockup']);
-    gulp.watch([path.wch.css],  ['css']);
-    gulp.watch([path.wch.js],   ['js']);
-    gulp.watch([path.wch.sprt], ['sprt']);
-    gulp.watch([path.wch.img],  ['img']);
-    gulp.watch([path.wch.fvc],  ['favicon']);
-    gulp.watch([path.wch.mov],  ['movie']);
-    gulp.watch([path.wch.fnt],  ['fonts']);
-    gulp.watch([path.wch.svg],  ['svg']);
+//    gulp.watch([path.wch.tmp],  ['mockup']).on('change', $.browserSync.reload);
+    
+    gulp.watch([path.wch.css],  ['css']).on('change', $.browserSync.reload);
+    gulp.watch([path.wch.js],   ['js']).on('change', $.browserSync.reload);
+    gulp.watch([path.wch.sprt], ['sprt']).on('change', $.browserSync.reload);
+    gulp.watch([path.wch.img],  ['img']).on('change', $.browserSync.reload);
+    gulp.watch([path.wch.fvc],  ['favicon']).on('change', $.browserSync.reload);
+    gulp.watch([path.wch.mov],  ['movie']).on('change', $.browserSync.reload);
+    gulp.watch([path.wch.fnt],  ['fonts']).on('change', $.browserSync.reload);
+    gulp.watch([path.wch.svg],  ['svg']).on('change', $.browserSync.reload);
 });
 gulp.task('default', ['build', 'server', 'watch']);
 
