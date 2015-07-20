@@ -217,7 +217,6 @@ gulp.task('watch', function () {
     gulp.watch([path.wch.tmp],  ['mockup']);
     gulp.watch([path.wch.css],  ['css']);
     gulp.watch([path.wch.js],   ['js']);
-//    gulp.watch([path.wch.js],   ['js'], $.browserSync.reload);
     gulp.watch([path.wch.sprt], ['sprt']);
     gulp.watch([path.wch.img],  ['img']);
     gulp.watch([path.wch.fvc],  ['favicon']);
