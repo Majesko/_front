@@ -1,10 +1,16 @@
+/*global alert: false, confirm: false, console: true, Debug: false, opera: false, prompt: false, WSH: false */
 
-var require, console, path, config, log,
+var require,
+    path,
+    config,
+    log,
     gulp = require('gulp'),
+    
     $ = require('gulp-load-plugins')({
         pattern: '*',
         lazy: false
     });
+
 
 // CONFIG / CONFIG / CONFIG / CONFIG / CONFIG / CONFIG /
 path = {
@@ -12,33 +18,48 @@ path = {
         tmp:  '_dev/_template/',
         css:  '_dev/_style/style.scss',
         js:   '_dev/_script/',
-        fvc:  '_dev/_media/favicon/',
-        img:  '_dev/_media/img/',
         sprt: '_dev/_media/sprite/',
-        svg:  '_dev/_media/svg/',
+        img:  '_dev/_media/img/',
+        fvc:  '_dev/_media/favicon/',
         mov:  '_dev/_media/movie/',
-        fnt:  '_dev/_media/fonts/font/'
+        fnt:  '_dev/_media/fonts/',
+        svg:  '_dev/_media/svg/'
     },
     vndr: {
-        tmp:  '_dev/vndr/tmp/',
-        css:  '_dev/vndr/css/',
-        js:   '_dev/vndr/js/'
+        bwr: './_dev/_bower',
+        tmp: './_dev/vndr/tmp',
+        css: './_dev/vndr/css',
+        js:  './_dev/vndr/js'
+    },
+    wch: {
+        bwr:  './bower.json',
+        tmp:  '_dev/_template/**/*.*',
+        css:  '_dev/_style/**/*.*',
+        js:   '_dev/_script/**/*.*',
+        sprt: '_dev/_media/sprite/*.*',
+        img:  '_dev/_media/img/*.*',
+        fvc:  '_dev/_media/favicon/*.*',
+        mov:  '_dev/_media/movie/*.*',
+        fnt:  '_dev/_media/fonts/*.*',
+        svg:  '_dev/_media/svg/*.*'
     },
     app: {
-        tmp: 'app/',
-        js:  'app/js/',
-        css: 'app/css/',
-        fvc: 'app/favicon/',
-        img: 'app/css/img/',
-        mov: 'app/css/movie/',
-        fnt: 'app/css/font/'
+        tmp: './app/',
+        js:  './app/js/',
+        css: './app/css/',
+        fvc: './app/favicon/',
+        img: './app/css/img/',
+        mov: './app/css/movie/',
+        fnt: './app/css/font/',
+        svg: './app/css/svg/'
     },
     bowerFiles: './_dev/_bower',
-    clean:      './_dev/vndr/tmp'
+    cleanTmp:   ["./app/index.html", "./_dev/vndr/tmp"],
+    cleanAll:   ["./app", "./_dev/vndr"]
 };
 config = {
     server: {
-        baseDir: "./app"
+        baseDir: path.app.tmp
     },
     tunnel: true,
     host: 'localhost',
@@ -49,29 +70,16 @@ config = {
 
 
 //// TASKS / TASKS / TASKS / TASKS / TASKS / TASKS / TASKS /
-
 //// SERVER
-gulp.task('sv', function () {
+gulp.task('server', function () {
     "use strict";
     return $.browserSync(config);
 });
 
-// SCSS or SASS
-gulp.task('css', function () {
-    "use strict";
-    return gulp.src(path.dev.css)
-        .pipe($.sass())
-        .pipe($.autoprefixer())
-        .pipe($.minifyCss())
-        .pipe($.rename("bundle.css"))
-        
-        .pipe(gulp.dest(path.app.css))
-        .pipe($.notify('CSS'))
-        .on('error', log);
-});
 
-// SPRITE.png
-gulp.task('sprite', function () {
+
+// MEDIA files  ------------------------------------ done!
+gulp.task('sprt', function () {
     "use strict";
     var spriteData = gulp.src(path.dev.sprt + "*.png")
         .pipe($.spritesmith({
@@ -88,8 +96,40 @@ gulp.task('sprite', function () {
         .pipe($.notify('SPRITE css'))
         .on('error', log);
 });
+gulp.task('img', function () {
+    "use strict";
+    return gulp.src([path.dev.img + "*.jpg", path.dev.img + "*.gif", path.dev.img + "*.png"])
+        .pipe(gulp.dest(path.app.img))
+        .pipe($.notify('img'));
+});
+gulp.task('favicon', function () {
+    "use strict";
+    return gulp.src(path.dev.fvc + "*.*")
+        .pipe(gulp.dest(path.app.fvc))
+        .pipe($.notify('favicon'));
+});
+gulp.task('movie', function () {
+    "use strict";
+    return gulp.src(path.dev.mov + "*.*")
+        .pipe(gulp.dest(path.app.mov))
+        .pipe($.notify('movie'));
+});
+gulp.task('fonts', function () {
+    "use strict";
+    return gulp.src([path.dev.fnt + "*.eot", path.dev.fnt + "*.svg", path.dev.fnt + "*.ttf", path.dev.fnt + "*.woff", path.dev.fnt + "*.woff2"])
+        .pipe(gulp.dest(path.app.fnt))
+        .pipe($.notify('fonts'));
+});
+gulp.task('svg', function () {
+    "use strict";
+    return gulp.src(path.dev.svg + "*.*")
+        .pipe(gulp.dest(path.app.svg))
+        .pipe($.notify('svg'));
+});
 
-// JADE
+
+
+// MOCKUP & Dependencies  ------------------------------------ done!
 gulp.task('jade', function () {
     "use strict";
     var YOUR_LOCALS = {};
@@ -102,39 +142,18 @@ gulp.task('jade', function () {
         .pipe($.notify('JADE'))
         .on('error', log);
 });
-
-
-gulp.task('bld', function (cb) {
+gulp.task('cleanMockup', function () {
     "use strict";
-    $.runSequence('jade', 'css', 'sprite', cb);
+    return gulp.src(path.cleanTmp)
+        .pipe($.clean())
+        .pipe($.notify('clean mockup'));
 });
-
-
-gulp.task('wiredep', function () {
-    "use strict";
-    
-    return gulp.src("./_dev/vndr/tmp/*.html")
-        .pipe($.wiredep.stream({
-            directory: './_dev/_bower',
-            devDependencies: true
-        }))
-        .pipe($.notify('wiredep'))
-        .pipe(gulp.dest('./_dev/vndr'));
-});
-
-
-gulp.task('build', function () {
+gulp.task('bower', function () {
     "use strict";
     var assets = $.useref.assets();
-    
-//    $.rimraf.sync('./app/', function (er) {
-//        if (er) throw er;
-//    });
-//            exclude: ['./_dev/_bower/modernizr']
-    
-    return gulp.src("./_dev/vndr/tmp/*.html")
+    return gulp.src(path.vndr.tmp + "/*.html")
         .pipe($.wiredep.stream({
-            directory: './_dev/_bower',
+            directory: path.vndr.bwr,
             devDependencies: true
         }))
         .pipe(assets).on('error', log)
@@ -142,59 +161,82 @@ gulp.task('build', function () {
         .pipe($.if('*.css', $.minifyCss())).on('error', log)
         .pipe(assets.restore()).on('error', log)
         .pipe($.useref()).on('error', log)
-    
         .pipe($.notify('build'))
-    
-        .pipe(gulp.dest("./app")).on('error', log);
+        .pipe(gulp.dest(path.app.tmp)).on('error', log);
 });
 
 
 
-
-//// vendor
-//gulp.task('rimraf', function () {
-//    "use strict";
-//    return gulp.src('./app/*.html')
-//        .pipe(rimraf())
-//        .pipe(notify('RIMRAF was done!'));
-//});
-//gulp.task('bower', function () {
-//    "use strict";
-//    return gulp.src('./_dev/*.html')
-//        .pipe(wiredep({
-//            directory: './_dev/_bower',
-//            devDependencies: true
-//        }))
-//        .pipe(gulp.dest('./_dev/vendor'));
-//});
-//gulp.task('useref', function () {
-//    "use strict";
-//    var assets = useref.assets();
-//    return gulp.src('./_dev/vendor/*.html')
-//        .pipe(assets)
-//        .pipe(gulpif('*.js', uglify()))
-//        .pipe(gulpif('*.css', minifyCSS()))
-//        .pipe(assets.restore())
-//        .pipe(useref())
-//        .pipe(gulp.dest('./app'))
-//        .pipe(connect.reload())
-//        .pipe(notify('VENDOR'));
-//});
-//
-//gulp.task('bld', function (cb) {
-//    "use strict";
-//    $.runSequence('rimraf', 'bower', 'useref', cb).on('error', log);
-//});
+// STYLE & SCRIPT ------------------------------------ done!
+gulp.task('css', function () {
+    "use strict";
+    return gulp.src(path.dev.css)
+        .pipe($.sass())
+        .pipe($.autoprefixer())
+        .pipe($.minifyCss())
+        .pipe($.rename("bundle.css"))
+        .pipe(gulp.dest(path.app.css))
+        .pipe($.notify('CSS'))
+        .on('error', log);
+});
+gulp.task('js', function () {
+    "use strict";
+    return gulp.src(path.dev.js + '**/**.js')
+        .pipe($.concat('main.js'))
+        .pipe($.uglify())
+        .pipe($.rename("main.min.js"))
+        .pipe(gulp.dest(path.app.js))
+//        .pipe($.browserSync.reload)
+//        .pipe($.browserSync.reload({stream: true}))
+        .pipe($.notify("javaScript"))
+        .on('error', log);
+});
 
 
 
+// COMBINED tasks
+gulp.task("media", function (cb) {
+    "use strict";
+    $.runSequence("sprt", "img", "favicon", "movie", "fonts", "svg", cb);
+});
+gulp.task("mockup", function (cb) {
+    "use strict";
+    $.runSequence("cleanMockup", "jade", "bower", cb);
+});
+gulp.task("build", function (cb) {
+    "use strict";
+    $.runSequence("media", "css", "js", "mockup", cb);
+});
 
 
 
+//// WATCHER
+gulp.task('watch', function () {
+    "use strict";
+//    gulp.watch([path.wch.bwr],  ['bower']);
+    gulp.watch([path.wch.tmp],  ['mockup']);
+    gulp.watch([path.wch.css],  ['css']);
+    gulp.watch([path.wch.js],   ['js']);
+//    gulp.watch([path.wch.js],   ['js'], $.browserSync.reload);
+    gulp.watch([path.wch.sprt], ['sprt']);
+    gulp.watch([path.wch.img],  ['img']);
+    gulp.watch([path.wch.fvc],  ['favicon']);
+    gulp.watch([path.wch.mov],  ['movie']);
+    gulp.watch([path.wch.fnt],  ['fonts']);
+    gulp.watch([path.wch.svg],  ['svg']);
+});
+gulp.task('default', ['build', 'server', 'watch']);
 
 
 
-
+// CLEAN PRODACTION & VENDOR PATHs
+gulp.task('c', function () {
+    "use strict";
+    return gulp.src(path.cleanAll)
+        .pipe($.clean())
+        .pipe($.notify('prodaction path & vendor path! CLEAN was DONE'));
+});
+// CATCH ERRORS
 function log(error) {
     "use strict";
     console.log([

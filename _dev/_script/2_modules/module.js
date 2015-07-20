@@ -6,5 +6,6 @@ var jQuery,
 (function ($) {
     "use strict";
     
+    console.log("livereload");
     console.log("module.js");
 }(jQuery));

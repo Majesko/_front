@@ -22,6 +22,7 @@
   "devDependencies": {
     "browser-sync": "^2.7.13",
     "gulp-autoprefixer": "^2.3.1",
+    "gulp-clean": "^0.3.1",
     "gulp-concat": "^2.6.0",
     "gulp-if": "^1.2.5",
     "gulp-jade": "^1.0.1",
@@ -38,7 +39,6 @@
     "gulp-webpack-build": "^0.11.1",
     "gulp.spritesmith": "^3.8.2",
     "node-libs-browser": "^0.5.2",
-    "rimraf": "^2.4.1",
     "run-sequence": "^1.1.1",
     "webpack": "^1.10.1",
     "webpack-config": "^0.7.0",
