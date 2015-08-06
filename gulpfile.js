@@ -4,10 +4,21 @@ var require,
     config,
     log,
     gulp = require("gulp"),
-    $ = require("gulp-load-plugins")({
-        pattern: ["gulp-*", "gulp.*", "*"],
-        lazy: false
-    }),
+    browserSync = require('browser-sync'),
+    autoprefixer = require('gulp-autoprefixer'),
+    clean = require('gulp-clean'),
+    concat = require('gulp-concat'),
+    gulpif = require('gulp-if'),
+    jade = require('gulp-jade'),
+    minifyCss = require('gulp-minify-css'),
+    notify = require('gulp-notify'),
+    rename = require('gulp-rename'),
+    sass = require('gulp-sass'),
+    uglify = require('gulp-uglify'),
+    useref = require('gulp-useref'),
+    spritesmith = require('gulp.spritesmith'),
+    runSequence = require('run-sequence'),
+    wiredep = require('wiredep').stream,
     prodPath = "app";
 
 
@@ -71,7 +82,7 @@ config = {
 //// SERVER
 gulp.task("server", function () {
     "use strict";
-    return $.browserSync(config);
+    return browserSync(config);
 });
 
 
@@ -79,53 +90,59 @@ gulp.task("server", function () {
 gulp.task("sprt", function () {
     "use strict";
     var spriteData = gulp.src(path.dev.sprt + "*.png")
-        .pipe($.spritesmith({
+        .pipe(spritesmith({
             imgName: "sprite.png",
             cssName: "sprite.css"
         }))
         .on("error", log);
     spriteData.img
         .pipe(gulp.dest(path.app.img))
-//        .pipe($.notify("SPRITE img"))
+        .pipe(browserSync.reload({stream: true}))
+//        .pipe(notify("SPRITE img"))
         .on("error", log);
     spriteData.css
         .pipe(gulp.dest(path.vndr.css))
-//        .pipe($.notify("SPRITE css"))
+//        .pipe(notify("SPRITE css"))
         .on("error", log);
 });
 gulp.task("img", function () {
     "use strict";
     return gulp.src([path.dev.img + "*.jpg", path.dev.img + "*.gif", path.dev.img + "*.png"])
         .pipe(gulp.dest(path.app.img))
-//        .pipe($.notify("img"))
+        .pipe(browserSync.reload({stream: true}))
+//        .pipe(notify("img"))
         .on("error", log);
 });
 gulp.task("favicon", function () {
     "use strict";
     return gulp.src(path.dev.fvc + "*.*")
         .pipe(gulp.dest(path.app.fvc))
-//        .pipe($.notify("favicon"))
+        .pipe(browserSync.reload({stream: true}))
+//        .pipe(notify("favicon"))
         .on("error", log);
 });
 gulp.task("movie", function () {
     "use strict";
     return gulp.src(path.dev.mov + "*.*")
         .pipe(gulp.dest(path.app.mov))
-//        .pipe($.notify("movie"))
+        .pipe(browserSync.reload({stream: true}))
+//        .pipe(notify("movie"))
         .on("error", log);
 });
 gulp.task("fonts", function () {
     "use strict";
     return gulp.src([path.dev.fnt + "*.eot", path.dev.fnt + "*.svg", path.dev.fnt + "*.ttf", path.dev.fnt + "*.woff", path.dev.fnt + "*.woff2"])
         .pipe(gulp.dest(path.app.fnt))
-//        .pipe($.notify("fonts"))
+        .pipe(browserSync.reload({stream: true}))
+//        .pipe(notify("fonts"))
         .on("error", log);
 });
 gulp.task("svg", function () {
     "use strict";
     return gulp.src(path.dev.svg + "*.*")
         .pipe(gulp.dest(path.app.svg))
-//        .pipe($.notify("svg"))
+        .pipe(browserSync.reload({stream: true}))
+//        .pipe(notify("svg"))
         .on("error", log);
 });
 
@@ -135,43 +152,36 @@ gulp.task("jade", function () {
     "use strict";
     var YOUR_LOCALS = {};
     return gulp.src(path.dev.tmp + "page/*.jade")
-        .pipe($.jade({
+        .pipe(jade({
             pretty: true,
             locals: YOUR_LOCALS
         }))
         .pipe(gulp.dest(path.vndr.tmp))
-//        .pipe($.notify("JADE"))
+//        .pipe(notify("JADE"))
         .on("error", log);
 });
 gulp.task("cleanMockup", function () {
     "use strict";
     return gulp.src(path.cleanTmp)
-        .pipe($.clean())
-//        .pipe($.notify("clean mockup"))
+        .pipe(clean())
+//        .pipe(notify("clean mockup"))
         .on("error", log);
 });
 gulp.task("bower", function () {
     "use strict";
-    var assets = $.useref.assets();
+    var assets = useref.assets();
     return gulp.src(path.vndr.tmp + "/*.html")
-        .pipe($.wiredep.stream({
+        .pipe(wiredep({
             directory: path.vndr.bwr,
             devDependencies: true
         }))
         .pipe(assets).on("error", log)
-        .pipe($.if("*.js",  $.uglify())).on("error", log)
-        .pipe($.if("*.css", $.minifyCss())).on("error", log)
+        .pipe(gulpif("*.js",  uglify())).on("error", log)
+        .pipe(gulpif("*.css", minifyCss())).on("error", log)
         .pipe(assets.restore()).on("error", log)
-        .pipe($.useref()).on("error", log)
+        .pipe(useref()).on("error", log)
         .pipe(gulp.dest(path.app.tmp))
-//        .pipe($.notify("bower files"))
-        .on("error", log);
-});
-gulp.task("reload", function () {
-    "use strict";
-    return gulp.src(path.app.tmp + "index.html")
-        .pipe($.browserSync.reload({stream: true}))
-        .pipe($.notify("mockup-reload"))
+        .pipe(notify("bower files"))
         .on("error", log);
 });
 
@@ -180,42 +190,60 @@ gulp.task("reload", function () {
 gulp.task("css", function () {
     "use strict";
     return gulp.src(path.dev.css)
-        .pipe($.sass())
-        .pipe($.autoprefixer())
-        .pipe($.minifyCss())
-        .pipe($.rename("bundle.css"))
+        .pipe(sass())
+        .pipe(autoprefixer())
+        .pipe(minifyCss())
+        .pipe(rename("bundle.css"))
         .pipe(gulp.dest(path.app.css))
-//        .pipe($.notify("CSS"))
+        .pipe(browserSync.reload({stream: true}))
+//        .pipe(notify("CSS"))
         .on("error", log);
 });
 gulp.task("js", function () {
     "use strict";
     return gulp.src(path.dev.js + "**/**.js")
-        .pipe($.concat("main.js"))
-        .pipe($.uglify())
-        .pipe($.rename("main.min.js"))
+        .pipe(concat("main.js"))
+        .pipe(uglify())
+        .pipe(rename("main.min.js"))
         .pipe(gulp.dest(path.app.js))
-//        .pipe($.notify("javaScript"))
+        .pipe(browserSync.reload({stream: true}))
+//        .pipe(notify("javaScript"))
         .on("error", log);
 });
 
 
+// TRICK task ------------------------------------------------------------------------
+gulp.task("reload", function () {
+    "use strict";
+    return gulp.src(path.app.tmp + "index.html")
+        .pipe(browserSync.reload({stream: true}))
+        .pipe(notify("mockup-reload"))
+        .on("error", log);
+});
+
+
+
 // COMBINED tasks ------------------------------------------------------------------------
-gulp.task("media", function (cb) {
+//gulp.task("media", function (cb) {
+//    "use strict";
+//    runSequence("sprt", "img", "favicon", "movie", "fonts", "svg", cb);
+//});
+//gulp.task("mockup", function (cb) {
+//    "use strict";
+//    runSequence("cleanMockup", "jade", "bower", cb);
+//});
+
+gulp.task("mockup-watcher", function (cb) {
     "use strict";
-    $.runSequence("sprt", "img", "favicon", "movie", "fonts", "svg", cb);
-});
-gulp.task("mockup", function (cb) {
-    "use strict";
-    $.runSequence("cleanMockup", "jade", "bower", cb);
-});
-gulp.task("mockup-watcher-reload", function (cb) {
-    "use strict";
-    $.runSequence("cleanMockup", "jade", "bower", "reload", cb);
+    runSequence("cleanMockup", "jade", "bower", "reload", cb);
 });
 gulp.task("build", function (cb) {
     "use strict";
-    $.runSequence("media", "css", "js", "mockup", cb);
+    runSequence("sprt", "img", "favicon", "movie", "fonts", "svg",
+                "css",
+                "js",
+                "cleanMockup", "jade", "bower",
+                "server", cb);
 });
 
 
@@ -223,17 +251,17 @@ gulp.task("build", function (cb) {
 //// WATCHER ------------------------------------------------------------------------
 gulp.task("watch", function () {
     "use strict";
-    gulp.watch([path.wch.tmp],  ["mockup-watcher-reload"]);
-    gulp.watch([path.wch.css],  ["css"]).on("change", $.browserSync.reload);
-    gulp.watch([path.wch.js],   ["js"]).on("change", $.browserSync.reload);
-    gulp.watch([path.wch.sprt], ["sprt"]).on("change", $.browserSync.reload);
-    gulp.watch([path.wch.img],  ["img"]).on("change", $.browserSync.reload);
-    gulp.watch([path.wch.fvc],  ["favicon"]).on("change", $.browserSync.reload);
-    gulp.watch([path.wch.mov],  ["movie"]).on("change", $.browserSync.reload);
-    gulp.watch([path.wch.fnt],  ["fonts"]).on("change", $.browserSync.reload);
-    gulp.watch([path.wch.svg],  ["svg"]).on("change", $.browserSync.reload);
+    gulp.watch([path.wch.tmp],  ["mockup-watcher"]);
+    gulp.watch([path.wch.css],  ["css"]);
+    gulp.watch([path.wch.js],   ["js"]);
+    gulp.watch([path.wch.sprt], ["sprt"]);
+    gulp.watch([path.wch.img],  ["img"]);
+    gulp.watch([path.wch.fvc],  ["favicon"]);
+    gulp.watch([path.wch.mov],  ["movie"]);
+    gulp.watch([path.wch.fnt],  ["fonts"]);
+    gulp.watch([path.wch.svg],  ["svg"]);
 });
-gulp.task("default", ["build", "server", "watch"]);
+gulp.task("default", ["build", "watch"]);
 
 
 
@@ -241,8 +269,8 @@ gulp.task("default", ["build", "server", "watch"]);
 gulp.task("c", function () {
     "use strict";
     return gulp.src(path.cleanAll)
-        .pipe($.clean())
-//        .pipe($.notify("prodaction path & vendor path! CLEAN was DONE"))
+        .pipe(clean())
+//        .pipe(notify("prodaction path & vendor path! CLEAN was DONE"))
         .on("error", log);
 });
 // CATCH ERRORS ------------------------------------------------------------------------

@@ -1,0 +1,148 @@
+###########################################################
+###														###
+###					НАСТРОЙКА .htaccess					###
+###														###
+###########################################################
+
+#======================================================================================#
+#	Кодировка
+#======================================================================================#
+AddDefaultCharset UTF-8
+
+
+#======================================================================================#
+#	Запретить листинг каталогов
+#======================================================================================#
+Options -Indexes
+
+
+#======================================================================================#
+#	Красивое отображение адресов (без расширения)
+#======================================================================================#
+Options +MultiViews
+
+
+#======================================================================================#
+#	Переопределение индексного файла
+#======================================================================================#
+DirectoryIndex index.html
+
+
+#======================================================================================#
+#	Визуализация листинга файлов
+#======================================================================================#
+#	IndexOptions FancyIndexing
+#	IndexOptions FancyIndexing ScanHTMLTitles
+
+
+#======================================================================================#
+#	Исключение из листинга определенных файлов
+#======================================================================================#
+#	IndexIgnore *.zip *.rar *.jpeg *.png *.svg *.txt 404.html
+
+
+#======================================================================================#
+#	Выполнение php кода интерпритатором php на сервере в указанных файлах
+#======================================================================================#
+#	AddType application/x-httpd-php .html .htm
+
+
+#======================================================================================#
+#	СТРАНИЦЫ ОШИБОК
+#======================================================================================#
+#	ErrorDOcument 403 / http://arsenykonohov/tech.html
+#	ErrorDOcument 403 / http://arsenykonohov/403.html
+#	ErrorDOcument 404 / 404.html
+
+
+#======================================================================================#
+#	РЕДИРЕКТ
+#======================================================================================#
+#	Redirect http://example.com
+
+
+
+#======================================================================================#
+#	УПРАВЛЕНИЕ ДОСТУПОМ
+#======================================================================================#
+
+#	Order Deny,Allow
+#	Deny from [IP-address, URL, all]
+#	Allow from [IP-address, URL, all]
+
+#	Order Deny,Allow
+#	Deny from all
+
+#	<Files "*.zip">
+#	Deny from all
+#	</Files>
+
+#	<Files ~ ".*\.(css|less|sass|scss)$.">
+#	Deny from all
+#	</Files>
+
+#	<FilesMathc ".+\.(gif|jpe?g|png)$">
+#	Deny from all
+#	</FilesMathc>
+
+#	<FilesMathc "tech\.(html|htm)$">
+#	Allow from all
+#	</FilesMathc>
+
+
+
+#======================================================================================#
+#	КЭШ
+#======================================================================================#
+
+<ifModule mod_expires.c>
+
+# Add correct content-type for fonts
+AddType application/vnd.ms-fontobject .eot
+AddType application/x-font-ttf .ttf
+AddType application/x-font-opentype .otf
+AddType application/x-font-woff .woff
+AddType image/svg+xml .svg
+
+# Compress compressible fonts
+AddOutputFilterByType DEFLATE application/x-font-ttf application/x-font-opentype image/svg+xml
+
+ExpiresActive On
+ExpiresDefault "access plus 5 seconds"
+
+# Cache Images
+ExpiresByType image/x-icon "access plus 2592000 seconds"
+ExpiresByType image/jpeg "access plus 2592000 seconds"
+ExpiresByType image/png "access plus 2592000 seconds"
+ExpiresByType image/gif "access plus 2592000 seconds"
+ExpiresByType image/svg+xml "access plus 2592000 seconds"
+
+# Cache Fonts
+ExpiresByType application/vnd.ms-fontobject "access plus 2592000 seconds"
+ExpiresByType application/x-font-ttf "access plus 2592000 seconds"
+ExpiresByType application/x-font-opentype "access plus 2592000 seconds"
+ExpiresByType application/x-font-woff "access plus 2592000 seconds"
+ExpiresByType image/svg+xml "access plus 2592000 seconds"
+
+# Cache other content types (Flash, CSS, JS, HTML, XML)
+ExpiresByType application/x-shockwave-flash "access plus 2592000 seconds"
+ExpiresByType text/css "access plus 604800 seconds"
+ExpiresByType text/javascript "access plus 2592000 seconds"
+ExpiresByType application/javascript "access plus 2592000 seconds"
+ExpiresByType application/x-javascript "access plus 2592000 seconds"
+ExpiresByType text/html "access plus 600 seconds"
+ExpiresByType application/xhtml+xml "access plus 600 seconds"
+
+</ifModule>
+
+
+
+#======================================================================================#
+# BEGIN Bad Bot Blocker
+#======================================================================================#
+SetEnvIfNoCase User-Agent "Abonti|aggregator|AhrefsBot|asterias|BDCbot|BLEXBot|BuiltBotTough|Bullseye|BunnySlippers|ca\-crawler|CCBot|Cegbfeieh|CheeseBot|CherryPicker|CopyRightCheck|cosmos|Crescent|discobot|DittoSpyder|DOC|DotBot|Download Ninja|EasouSpider|EmailCollector|EmailSiphon|EmailWolf|EroCrawler|Exabot|ExtractorPro|Fasterfox|FeedBooster|Foobot|Genieo|grub\-client|Harvest|hloader|httplib|HTTrack|humanlinks|ieautodiscovery|InfoNaviRobot|IstellaBot|Java/1\.|JennyBot|k2spider|Kenjin Spider|Keyword Density/0\.9|larbin|LexiBot|libWeb|libwww|LinkextractorPro|linko|LinkScan/8\.1a Unix|LinkWalker|LNSpiderguy|lwp\-trivial|magpie|Mata Hari|MaxPointCrawler|MegaIndex|Microsoft URL Control|MIIxpc|Mippin|Missigua Locator|Mister PiX|MJ12bot|moget|MSIECrawler|NetAnts|NICErsPRO|Niki\-Bot|NPBot|Nutch|Offline Explorer|Openfind|panscient\.com|PHP/5\.\{|ProPowerBot/2\.14|ProWebWalker|Python\-urllib|QueryN Metasearch|RepoMonkey|RMA|SemrushBot|SeznamBot|SISTRIX|sitecheck\.Internetseer\.com|SiteSnagger|SnapPreviewBot|Sogou|SpankBot|spanner|spbot|Spinn3r|suzuran|Szukacz/1\.4|Teleport|Telesoft|The Intraformant|TheNomad|TightTwatBot|Titan|toCrawl/UrlDispatcher|True_Robot|turingos|TurnitinBot|UbiCrawler|UnisterBot|URLy Warning|VCI|WBSearchBot|Web Downloader/6\.9|Web Image Collector|WebAuto|WebBandit|WebCopier|WebEnhancer|WebmasterWorldForumBot|WebReaper|WebSauger|Website Quester|Webster Pro|WebStripper|WebZip|Wotbox|wsr\-agent|WWW\-Collector\-E|Xenu|Zao|Zeus|ZyBORG|coccoc|Incutio|lmspider|memoryBot|SemrushBot|serf|Unknown|uptime files" bad_bot
+SetEnvIfNoCase Referer "semalt\.com|kambasoft\.com|savetubevideo\.com|buttons\-for\-website\.com|sharebutton\.net|soundfrost\.org|srecorder\.com|softomix\.com|softomix\.net|myprintscreen\.com|joinandplay\.me|fbfreegifts\.com|openmediasoft\.com|zazagames\.org|extener\.org|openfrost\.com|openfrost\.net|googlsucks\.com|best\-seo\-offer\.com|buttons\-for\-your\-website\.com|www\.Get\-Free\-Traffic\-Now\.com|best\-seo\-solution\.com|buy\-cheap\-online\.info|site3\.free\-share\-buttons\.com|webmaster\-traffic\.com" bad_bot
+Deny from env=bad_bot
+#======================================================================================#
+# END Bad Bot Blocker
+#======================================================================================#
